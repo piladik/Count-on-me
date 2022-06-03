@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} Count on me {% endblock %}
+
+{% block content %}
+<h3>I am the main page</h3>
+<hr>
+<h4>Add purchase</h4>
+<form method="post">
+    <input type="text" name="category" placeholder="category">
+    <input type="number" name="price" placeholder="price">
+    <input type="number" name="card_id" placeholder="card_id">
+    <button type="submit" name="add_purchase">Add purchase</button>
+</form>
+<h4>Delete purchase</h4>
+<form method="post">
+    <input type="number" name="purchase_id" placeholder="purchase_id">
+    <button type="submit" name="delete_purchase">Delete purchase</button>
+</form>
+{% endblock %}

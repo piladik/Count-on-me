@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %} Count on me {% endblock %}
+
+{% block content %}
+<h3>I am the cards page</h3>
+<hr>
+<h4>Create card</h4>
+<form method="post">
+    <div class="field">
+        <input type="text" name="card_name" placeholder="Card name">
+        <input type="text" name="card_type" placeholder="Card type">
+        <button type="submit" name="card_create">Create</button>
+    </div>
+</form>
+<h4>Delete card</h4>
+<form method="post">
+    <div class="field">
+        <input type="number" name="card_id" placeholder="Card id">
+        <button type="submit" name="card_delete">Delete</button>
+    </div>
+</form>
+<h4>Deposit/Withdraw</h4>
+<form method="post">
+    <div class="field">
+        <input type="number" name="amount" placeholder="amount">
+        <input type="number" name="card_id" placeholder="Card id">
+        <button type="submit" name="card_deposit">Deposit</button>
+        <button type="submit" name="card_withdraw">Withdraw</button>
+    </div>
+</form>
+{% endblock %}
