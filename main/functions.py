@@ -41,30 +41,22 @@ class Wallet(User):
 
     def deposit(self, card_id, amount):
         card_balance = self.db.execute(
-            "SELECT cash FROM cards WHERE user_id = ? and card_id = ?", (
-                self.user_id,
-                card_id,
-            )).fetchone()["cash"]
-        self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?", (
-            card_balance + amount,
-            card_id,
-        ))
+            "SELECT cash FROM cards WHERE user_id = ? and card_id = ?",
+            (self.user_id, card_id)).fetchone()["cash"]
+        self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
+                        (card_balance + amount, card_id))
         self.db.commit()
         success = "Money have been added"
         return success
 
     def withdraw(self, card_id, amount):
         card_balance = self.db.execute(
-            "SELECT cash FROM cards WHERE user_id = ? and card_id = ?", (
-                self.user_id,
-                card_id,
-            )).fetchone()["cash"]
+            "SELECT cash FROM cards WHERE user_id = ? and card_id = ?",
+            (self.user_id, card_id)).fetchone()["cash"]
 
         if card_balance >= amount:
-            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?", (
-                card_balance - amount,
-                card_id,
-            ))
+            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
+                            (card_balance - amount, card_id))
             self.db.commit()
             success = "Money have been withdrawn"
             return success
@@ -78,15 +70,11 @@ class Wallet(User):
         card_to_balance = get_card_balance(self.db, self.user_id, card_to_id)
 
         if amount <= card_from_balance:
-            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?", (
-                card_to_balance + amount,
-                card_to_id,
-            ))
+            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
+                            (card_to_balance + amount, card_to_id))
             self.db.commit()
-            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?", (
-                card_from_balance - amount,
-                card_from_id,
-            ))
+            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
+                            (card_from_balance - amount, card_from_id))
             self.db.commit()
 
     def show_balance_total(self):
@@ -117,22 +105,37 @@ class Purchase(User):
         # Add purchase into history table
         self.db.execute(
             "INSERT INTO history (user_id, category, price, card_id) VALUES (?, ?, ?, ?)",
-            (
-                self.user_id,
-                category,
-                price,
-                card_id,
-            ))
+            (self.user_id, category, price, card_id))
         self.db.commit()
         success = "Purchase has been added"
         return success
 
     def delete_purchase(self, purchase_id):
-        self.db.execute("DELETE FROM history WHERE user_id = ? and id = ?", (
-            self.user_id,
-            purchase_id,
-        ))
+        try:
+            card_id = self.db.execute(
+                "SELECT card_id FROM history WHERE user_id = ? and purchase_id = ?",
+                (self.user_id, purchase_id)).fetchone()["card_id"]
+            price = price = self.db.execute(
+                "SELECT price FROM history WHERE user_id = ? and purchase_id = ?",
+                (self.user_id, purchase_id)).fetchone()["price"]
+        except TypeError:
+            error = "Access denied."
+            return error
+        balance = get_card_balance(self.db, self.user_id, card_id)
+
+        # Updates balance
+        self.db.execute(
+            "UPDATE cards SET cash = ? WHERE user_id = ? and card_id = ?",
+            (balance + price, self.user_id, card_id))
         self.db.commit()
+
+        # Deletes from history table
+        self.db.execute(
+            "DELETE FROM history WHERE user_id = ? and purchase_id = ?",
+            (self.user_id, purchase_id))
+        self.db.commit()
+        success = "Purhase has been deleted"
+        return success
 
     def all_purchase_list(self):
         list = self.db.execute("SELECT * FROM history WHERE user_id = ?",
@@ -142,11 +145,8 @@ class Purchase(User):
 
 def get_card_balance(db, user_id, card_id):
     balance = db.execute(
-        "SELECT cash FROM cards WHERE user_id = ? and card_id = ?", (
-            user_id,
-            card_id,
-        )).fetchone()
-    print()
+        "SELECT cash FROM cards WHERE user_id = ? and card_id = ?",
+        (user_id, card_id)).fetchone()
     return balance["cash"]
 
 

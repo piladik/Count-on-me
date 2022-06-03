@@ -61,7 +61,13 @@ def index():
         if "delete_purchase" in request.form:
             purchase_id = request.form.get("purchase_id")
 
-            purchase.delete_purchase(purchase_id)
+            if not purchase_id:
+                error = "Such purchase doesn't exist"
+
+            if error is None:
+                success = purchase.delete_purchase(purchase_id)
+                flash(success)
+                return redirect(url_for("index.index"))
 
         flash(error)
 
