@@ -1,8 +1,8 @@
-from ast import Delete
-from distutils.log import info
 import re
-from unicodedata import category
 from main.db import get_db
+
+# base categories
+CATEGORIES = ["Grocery", "Transport", "Cafe"]
 
 
 class User():
@@ -73,16 +73,9 @@ class Wallet(User):
             return error
 
     def transfer(self, card_from_id, card_to_id, amount):
-        card_from_balance = self.db.execute(
-            "SELECT cash FROM cards WHERE user_id = ? and card_id = ?", (
-                self.user_id,
-                card_from_id,
-            )).fetchone()["cash"]
-        card_to_balance = self.db.execute(
-            "SELECT cash FROM cards WHERE user_id = ? and card_id = ?", (
-                self.user_id,
-                card_to_id,
-            )).fetchone()["cash"]
+        card_from_balance = get_card_balance(self.db, self.user_id,
+                                             card_from_id)
+        card_to_balance = get_card_balance(self.db, self.user_id, card_to_id)
 
         if amount <= card_from_balance:
             self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?", (
@@ -112,6 +105,16 @@ class Purchase(User):
         self.db = get_db()
 
     def add_purchase(self, category, price, card_id):
+        balance = get_card_balance(self.db, self.user_id, card_id)
+
+        # Updates card balance
+        balance = balance - price
+        self.db.execute(
+            "UPDATE cards SET cash = ? WHERE user_id = ? and card_id = ?",
+            (balance, self.user_id, card_id))
+        self.db.commit()
+
+        # Add purchase into history table
         self.db.execute(
             "INSERT INTO history (user_id, category, price, card_id) VALUES (?, ?, ?, ?)",
             (
@@ -121,6 +124,8 @@ class Purchase(User):
                 card_id,
             ))
         self.db.commit()
+        success = "Purchase has been added"
+        return success
 
     def delete_purchase(self, purchase_id):
         self.db.execute("DELETE FROM history WHERE user_id = ? and id = ?", (
@@ -135,7 +140,14 @@ class Purchase(User):
         return list
 
 
-### Helpers for auth.py ###
+def get_card_balance(db, user_id, card_id):
+    balance = db.execute(
+        "SELECT cash FROM cards WHERE user_id = ? and card_id = ?", (
+            user_id,
+            card_id,
+        )).fetchone()
+    print()
+    return balance["cash"]
 
 
 #This is email validator function
