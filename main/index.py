@@ -1,7 +1,7 @@
 from flask import request, url_for, render_template, redirect, Blueprint, session, flash
 from main.auth import login_required
 from main.db import get_db
-from main.functions import User, Purchase, CATEGORIES, get_card_balance
+from main.functions import User, Purchase, Wallet, CATEGORIES, get_card_balance
 
 bp = Blueprint("index", __name__)
 
@@ -17,6 +17,9 @@ def index():
     print(user)
     purchase = Purchase(user_table["id"], user_table["username"],
                         user_table["email"])
+    wallet = Wallet(user_table["id"], user_table["username"],
+                    user_table["email"])
+    cards = wallet.get_cards_list()
     error = None
     success = None
 
@@ -37,8 +40,8 @@ def index():
             try:
                 price = float(price)
                 category = category.capitalize()
-            except (TypeError, ValueError):
-                error = "Amount should be integer."
+            except (TypeError, ValueError, AttributeError):
+                error = "Amount should be integer and category can not be empty"
                 flash(error)
                 return redirect(url_for("index.index"))
 
@@ -76,4 +79,7 @@ def index():
         print(
             f"Category: {purchase['category']}, Price: {purchase['price']}, Card id: {purchase['card_id']},"
         )
-    return render_template("app/index.html")
+    return render_template("app/index.html",
+                           categories=CATEGORIES,
+                           cards=cards,
+                           history=history)

@@ -7,14 +7,28 @@
 <hr>
 <h4>Add purchase</h4>
 <form method="post">
-    <input type="text" name="category" placeholder="category">
     <input type="number" name="price" placeholder="price">
-    <input type="number" name="card_id" placeholder="card_id">
+    <select name="category" id="">
+        <option disabled selected>Choose category</option>
+        {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+    <select name="card_id" id="">
+        {% for card in cards %}
+            <option value="{{ card['card_id'] }}">{{ card["card_name"] }}</option>
+        {% endfor %}
+    </select>
     <button type="submit" name="add_purchase">Add purchase</button>
 </form>
-<h4>Delete purchase</h4>
-<form method="post">
-    <input type="number" name="purchase_id" placeholder="purchase_id">
-    <button type="submit" name="delete_purchase">Delete purchase</button>
-</form>
+<h4>Recent activity</h4>
+{% for purchase in history %}
+    <p>Category: {{ purchase["category"] }}, Price: {{ purchase["price"] }}</p>
+    <form method="post">
+        <select hidden name="purchase_id">
+            <option selected hidden value="{{ purchase['purchase_id'] }}">{{ purchase["purchase_id"] }}</option>
+        </select>
+        <button type="submit" name="delete_purchase">Delete purchase</button>
+    </form>
+{% endfor %}
 {% endblock %}
