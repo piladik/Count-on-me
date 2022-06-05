@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS cards;
 DROP TABLE IF EXISTS history;
-DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS shortcuts;
 
 
 CREATE TABLE users (
@@ -32,9 +32,11 @@ CREATE TABLE history (
   FOREIGN KEY (card_id) REFERENCES cards (id)
 );
 
-CREATE TABLE categories (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE shortcuts (
+  shortcut_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,
-  category_name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  name TEXT NOT NULL,
+  price FLOAT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES user (id)
-);
+)

@@ -6,3 +6,5 @@ instance/
 
 *.pyc
 __pycache__/
+
+todo.txt

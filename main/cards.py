@@ -1,9 +1,10 @@
 from email import message
 from typing import Type
+from unicodedata import category
 from flask import request, url_for, render_template, redirect, Blueprint, session, flash
 from main.auth import login_required
 from main.db import get_db
-from main.functions import User, Wallet
+from main.functions import User, Wallet, CATEGORIES
 
 bp = Blueprint("cards", __name__)
 
@@ -90,8 +91,45 @@ def cards():
                     flash(message)
                     return redirect(url_for("cards.cards"))
 
-        # TODO if "card_transfer" in request.form
+        if "card_transfer" in request.form:
+            amount = request.form.get("amount")
+            card_id_from = request.form.get("card_id_from")
+            card_id_to = request.form.get("card_id_to")
+
+            try:
+                amount = float(amount)
+                card_id_from = int(card_id_from)
+                card_id_to = int(card_id_to)
+            except (TypeError, ValueError):
+                error = "Missing amount or card."
+                return redirect(url_for("cards.cards"))
+            else:
+                message = wallet.transfer(card_id_from, card_id_to, amount)
+                flash(message)
+                return redirect(url_for("cards.cards"))
+
+        if "card_shortcut" in request.form:
+            category = request.form.get("category")
+            shortcut_name = request.form.get("name")
+            price = request.form.get("price")
+
+            try:
+                category = category.capitalize()
+                shortcut_name = shortcut_name.capitalize()
+                price = float(price)
+            except:
+                (TypeError, ValueError)
+                error = "Invalid input"
+                flash(error)
+                return redirect(url_for("cards.cards"))
+            else:
+                message = wallet.create_shortcut(category, shortcut_name,
+                                                 price)
+                flash(message)
+                return redirect(url_for("cards.cards"))
 
         flash(error)
 
-    return render_template("app/cards.html")
+    return render_template("app/cards.html",
+                           cards=cards,
+                           categories=CATEGORIES)

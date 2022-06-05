@@ -1,3 +1,6 @@
+from distutils.log import error
+from email import message
+from os import access
 import re
 from main.db import get_db
 
@@ -65,17 +68,44 @@ class Wallet(User):
             return error
 
     def transfer(self, card_from_id, card_to_id, amount):
-        card_from_balance = get_card_balance(self.db, self.user_id,
-                                             card_from_id)
-        card_to_balance = get_card_balance(self.db, self.user_id, card_to_id)
+        try:
+            card_from_balance = get_card_balance(self.db, self.user_id,
+                                                 card_from_id)
+            card_to_balance = get_card_balance(self.db, self.user_id,
+                                               card_to_id)
+        except TypeError:
+            message = "Access denied"
+            return message
+        else:
+            if amount <= card_from_balance:
+                self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
+                                (card_to_balance + amount, card_to_id))
+                self.db.commit()
+                self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
+                                (card_from_balance - amount, card_from_id))
+                self.db.commit()
+                message = "Money have been successfully transfered."
+                return message
+            else:
+                message = "Not enough money"
+                return message
 
-        if amount <= card_from_balance:
-            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
-                            (card_to_balance + amount, card_to_id))
-            self.db.commit()
-            self.db.execute("UPDATE cards SET cash = ? WHERE card_id = ?",
-                            (card_from_balance - amount, card_from_id))
-            self.db.commit()
+    def create_shortcut(self, category, shortcut_name, price):
+        self.db.execute(
+            "INSERT INTO shortcuts (user_id, category, name, price) VALUES (?, ?, ?, ?)",
+            (self.user_id, category, shortcut_name, price))
+        self.db.commit()
+        success = "Shortcut has been created"
+        return success
+
+    def get_shortcuts(self):
+        shortcuts = self.db.execute(
+            "SELECT * FROM shortcuts WHERE user_id = ?",
+            (self.user_id, )).fetchall()
+        if len(shortcuts) == 0:
+            return 0
+        else:
+            return shortcuts
 
     def show_balance_total(self):
         return str(self.balance)
@@ -93,6 +123,7 @@ class Purchase(User):
         self.db = get_db()
 
     def add_purchase(self, category, price, card_id):
+        print("I work")
         balance = get_card_balance(self.db, self.user_id, card_id)
 
         # Updates card balance

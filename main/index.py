@@ -1,3 +1,5 @@
+from email import message
+from os import access
 from flask import request, url_for, render_template, redirect, Blueprint, session, flash
 from main.auth import login_required
 from main.db import get_db
@@ -65,11 +67,43 @@ def index():
             purchase_id = request.form.get("purchase_id")
 
             if not purchase_id:
-                error = "Such purchase doesn't exist"
+                error = "Such purchase doesn't exist."
 
             if error is None:
                 success = purchase.delete_purchase(purchase_id)
                 flash(success)
+                return redirect(url_for("index.index"))
+
+        if "use_shortcut" in request.form:
+            category = request.form.get("category")
+            price = request.form.get("price")
+            card_id = request.form.get("card_id")
+
+            # check if user has access to selected card
+            try:
+                card_id = int(card_id)
+            except (ValueError):
+                error = "Such card doesn't exist."
+                flash(error)
+                return redirect(url_for("index.index"))
+
+            # if selected card is correct - make sure that input is valid
+            try:
+                category = category.capitalize()
+                price = float(price)
+            except (TypeError, ValueError):
+                error = "Invalid input"
+                flash(error)
+                return redirect(url_for("index.index"))
+
+            # if user select card that he doesn't own - flash "access denied."
+            try:
+                message = purchase.add_purchase(category, price, card_id)
+                flash(message)
+                return redirect(url_for("index.index"))
+            except (TypeError):
+                message = "Access denied"
+                flash(message)
                 return redirect(url_for("index.index"))
 
         flash(error)
@@ -82,4 +116,5 @@ def index():
     return render_template("app/index.html",
                            categories=CATEGORIES,
                            cards=cards,
-                           history=history)
+                           history=history,
+                           shortcuts=wallet.get_shortcuts())
