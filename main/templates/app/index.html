@@ -24,7 +24,7 @@
 
 <h4>Recent activity</h4>
 {% for purchase in recent %}
-    <p>Category: {{ purchase["category"] }}, Price: {{ purchase["price"] }}</p>
+    <p>Category: {{ purchase["category"] }}, Price: {{ symbol }}{{ purchase["price"] }}</p>
     <form method="post">
         <select hidden name="purchase_id">
             <option selected hidden value="{{ purchase['purchase_id'] }}">{{ purchase["purchase_id"] }}</option>

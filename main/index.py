@@ -1,3 +1,4 @@
+from locale import currency
 from flask import request, url_for, render_template, redirect, Blueprint, session, flash
 from main.auth import login_required
 from main.db import get_db
@@ -110,10 +111,14 @@ def index():
 
     # Return 10 last purchases from history table
     recent = purchase.show_recent()
+    currency_symbol = db.execute(
+        "SELECT currency_symbol FROM users WHERE id = ?",
+        (user_id, )).fetchone()
 
     return render_template("app/index.html",
                            categories=CATEGORIES,
                            cards=cards,
+                           symbol=currency_symbol["currency_symbol"],
                            recent=recent,
                            recent_by_category=total_recent_by_each_category(
                                db, user_id),
