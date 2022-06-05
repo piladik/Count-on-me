@@ -9,7 +9,8 @@ CREATE TABLE users (
   username TEXT UNIQUE NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
-  balance INTEGER DEFAULT 0
+  currency TEXT NOT NULL,
+  currency_symbol TEXT NOT NULL
 );
 
 CREATE TABLE cards (

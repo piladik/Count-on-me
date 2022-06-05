@@ -1,19 +1,24 @@
 from distutils.log import error
 from email import message
+from locale import currency
 from os import access
 import re
 from main.db import get_db
 
 # base categories
 CATEGORIES = ["Grocery", "Transport", "Cafe"]
+CURRENCY = [{"name": "EUR", "symbol": "€"}, {"name": "USD", "symbol": "$"}]
 
 
 class User():
 
-    def __init__(self, user_id, username, email):
+    def __init__(self, user_id, username, email, currency_name,
+                 currency_symbol):
         self.user_id = user_id
         self.username = username
         self.email = email
+        self.currency = currency_name
+        self.symbol = currency_symbol
 
     def __str__(self):
         information = f"id = {self.user_id}, username = {self.username}, email = {self.email}"
@@ -35,8 +40,10 @@ class User():
 
 class Wallet(User):
 
-    def __init__(self, user_id, username, email):
-        super().__init__(user_id, username, email)
+    def __init__(self, user_id, username, email, currency_name,
+                 currency_symbol):
+        super().__init__(user_id, username, email, currency_name,
+                         currency_symbol)
         self.db = get_db()
         self.balance = self.db.execute(
             "SELECT SUM(cash) as balance FROM cards WHERE user_id = ?",
@@ -118,8 +125,10 @@ class Wallet(User):
 
 class Purchase(User):
 
-    def __init__(self, user_id, username, email):
-        super().__init__(user_id, username, email)
+    def __init__(self, user_id, username, email, currency_name,
+                 currency_symbol):
+        super().__init__(user_id, username, email, currency_name,
+                         currency_symbol)
         self.db = get_db()
 
     def add_purchase(self, category, price, card_id):
@@ -173,6 +182,12 @@ class Purchase(User):
                                (self.user_id, )).fetchall()
         return list
 
+    def show_recent(self):
+        list = self.db.execute(
+            "SELECT * FROM history WHERE user_id = ? ORDER BY purchase_id DESC LIMIT 10",
+            (self.user_id, )).fetchall()
+        return list
+
 
 def get_card_balance(db, user_id, card_id):
     balance = db.execute(
@@ -206,3 +221,45 @@ def is_valid_password(password):
     else:
         print("not valid")
         return False
+
+
+# TODO Redesign so that I don't have to type categories manually
+def total_recent_by_each_category(db, user_id):
+    operations = db.execute(
+        "SELECT purchase_id, category, price, date FROM history WHERE user_id = ? ORDER BY purchase_id DESC LIMIT 10",
+        (user_id, )).fetchall()
+
+    totalSpent = float(0)
+    cafe = float(0)
+    transport = float(0)
+    grocery = float(0)
+
+    for operation in operations:
+        totalSpent = operation["price"] + totalSpent
+        if operation["category"] == "Cafe":
+            cafe = operation["price"] + cafe
+        elif operation["category"] == "Transport":
+            transport = operation["price"] + transport
+        elif operation["category"] == "Grocery":
+            grocery = operation["price"] + grocery
+
+    cafe = toPercent(cafe, totalSpent)
+    transport = toPercent(transport, totalSpent)
+    grocery = toPercent(grocery, totalSpent)
+
+    list = {
+        "total": totalSpent,
+        "cafe": cafe,
+        "transport": transport,
+        "grocery": grocery
+    }
+    return list
+
+
+# percentFormat
+def toPercent(part, whole):
+    if part == 0 and whole == 0:
+        return 0
+    else:
+        percentage = round(part / whole * 100, 2)
+        return str(percentage) + " %"

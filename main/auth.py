@@ -1,4 +1,5 @@
 import functools
+from locale import currency
 
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 
@@ -6,6 +7,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from main.db import get_db
 from main.functions import is_valid_email, is_valid_password
+
+from main.functions import CURRENCY
+
+from operator import itemgetter
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -17,6 +22,9 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
         confirm = request.form.get("confirm")
+        currency = request.form.get("currency")
+        symbol = None
+
         db = get_db()
         error = None
         success = None
@@ -35,12 +43,19 @@ def register():
             error = "Confirm password field can not be empty."
         elif confirm != password:
             error = "Passwords should match"
+        elif currency not in list(map(itemgetter("name"), CURRENCY)):
+            error = "Chosen currency is not available"
+
+        for item in CURRENCY:
+            if item["name"] == currency:
+                symbol = item["symbol"]
 
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-                    (username, email, generate_password_hash(password)))
+                    "INSERT INTO users (username, email, password, currency, currency_symbol) VALUES (?, ?, ?, ?, ?)",
+                    (username, email, generate_password_hash(password),
+                     currency, symbol))
                 db.commit()
                 success = "Account has been created"
                 flash(success)
@@ -51,7 +66,7 @@ def register():
 
         flash(error)
 
-    return render_template('auth/register.html')
+    return render_template('auth/register.html', currency=CURRENCY)
 
 
 @bp.route('/login', methods=('GET', 'POST'))

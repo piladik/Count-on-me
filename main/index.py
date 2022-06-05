@@ -3,7 +3,7 @@ from os import access
 from flask import request, url_for, render_template, redirect, Blueprint, session, flash
 from main.auth import login_required
 from main.db import get_db
-from main.functions import User, Purchase, Wallet, CATEGORIES, get_card_balance
+from main.functions import User, Purchase, Wallet, CATEGORIES, get_card_balance, total_recent_by_each_category
 
 bp = Blueprint("index", __name__)
 
@@ -15,12 +15,14 @@ def index():
     user_id = session["user_id"]
     user_table = db.execute("SELECT * FROM users where id = ?",
                             (user_id, )).fetchone()
-    user = User(user_table["id"], user_table["username"], user_table["email"])
-    print(user)
+    user = User(user_table["id"], user_table["username"], user_table["email"],
+                user_table["currency"], user_table["currency_symbol"])
     purchase = Purchase(user_table["id"], user_table["username"],
-                        user_table["email"])
+                        user_table["email"], user_table["currency"],
+                        user_table["currency_symbol"])
     wallet = Wallet(user_table["id"], user_table["username"],
-                    user_table["email"])
+                    user_table["email"], user_table["currency"],
+                    user_table["currency_symbol"])
     cards = wallet.get_cards_list()
     error = None
     success = None
@@ -108,13 +110,13 @@ def index():
 
         flash(error)
 
-    history = purchase.all_purchase_list()
-    for purchase in history:
-        print(
-            f"Category: {purchase['category']}, Price: {purchase['price']}, Card id: {purchase['card_id']},"
-        )
+    # Return 10 last purchases from history table
+    recent = purchase.show_recent()
+
     return render_template("app/index.html",
                            categories=CATEGORIES,
                            cards=cards,
-                           history=history,
+                           recent=recent,
+                           recent_by_category=total_recent_by_each_category(
+                               db, user_id),
                            shortcuts=wallet.get_shortcuts())

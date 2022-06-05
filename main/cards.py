@@ -16,11 +16,11 @@ def cards():
     user_id = session["user_id"]
     user_table = db.execute("SELECT * FROM users where id = ?",
                             (user_id, )).fetchone()
-    user = User(user_table["id"], user_table["username"], user_table["email"])
-    print(user)
+    user = User(user_table["id"], user_table["username"], user_table["email"],
+                user_table["currency"], user_table["currency_symbol"])
     wallet = Wallet(user_table["id"], user_table["username"],
-                    user_table["email"])
-    print(wallet.show_balance_total())
+                    user_table["email"], user_table["currency"],
+                    user_table["currency_symbol"])
     cards = wallet.get_cards_list()
     for card in cards:
         print(f"Name: {card['card_name']}, Card balance: {card['cash']}")

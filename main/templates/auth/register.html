@@ -20,6 +20,13 @@
         <label for="password2">Confirm</label>
         <input type="password" name="confirm" id="password2">
     </div>
+    <div class="field">
+        <select name="currency">
+            {% for object in currency %}
+                <option value="{{ object['name'] }}">{{ object["name"] }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <button type="submit">Register</button>
 </form>
 {% endblock %}
