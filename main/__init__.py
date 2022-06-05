@@ -38,4 +38,7 @@ def create_app(test_config=None):
     from . import cards
     app.register_blueprint(cards.bp)
 
+    from . import account
+    app.register_blueprint(account.bp)
+
     return app

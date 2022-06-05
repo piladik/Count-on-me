@@ -41,6 +41,7 @@
 <h4>Shortcuts</h4>
 {% if shortcuts == 0 %}
 <p>You don't have any shortcut yet. Shortcut can be created at "Cards" page</p>
+<a href="{{ url_for('cards.cards') }}">Go to cards</a>
 {% else %}
 {% for shortcut in shortcuts %}
 <form method="post">
