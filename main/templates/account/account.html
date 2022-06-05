@@ -3,6 +3,7 @@
 {% block title %} Count on me {% endblock %}
 
 {% block content %}
+<h4>Change password</h4>
 <form method="post">
     <div class="field">
         <label for="current_password">Current password</label>
@@ -17,5 +18,14 @@
         <input type="password" id="confirm_new_password" name="confirm_new_password">
     </div>
     <button type="submit">Change password</button>
+</form>
+<h4>Change currenct</h4>
+<form method>
+    <select name="currency">
+        {% for object in currency %}
+        <option value="{{ object['name'] }}">{{ object["name"] }}</option>
+        {% endfor %}
+        <button type="submit">Change currency</button>
+    </select>
 </form>
 {% endblock %}

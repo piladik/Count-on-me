@@ -2,7 +2,7 @@ from flask import request, url_for, render_template, redirect, Blueprint, sessio
 from werkzeug.security import check_password_hash, generate_password_hash
 from main.auth import login_required
 from main.db import get_db
-from main.functions import is_valid_password
+from main.functions import is_valid_password, CURRENCY
 
 bp = Blueprint("account", __name__)
 
@@ -41,4 +41,4 @@ def account():
 
         flash(error)
 
-    return render_template("account/account.html")
+    return render_template("account/account.html", currency=CURRENCY)
