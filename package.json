@@ -1,0 +1,22 @@
+{
+  "name": "count-on-me",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile-sass": "node-sass main/static/scss/main.scss main/static/css/style.css -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piladik/Count-on-me.git"
+  },
+  "author": "Vlad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/piladik/Count-on-me/issues"
+  },
+  "homepage": "https://github.com/piladik/Count-on-me#readme",
+  "devDependencies": {
+    "node-sass": "^7.0.1"
+  }
+}
