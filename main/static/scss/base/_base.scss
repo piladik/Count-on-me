@@ -15,4 +15,11 @@ body {
     box-sizing: border-box;
     font-family: 'Exo', sans-serif;
     font-size: 2rem;
+    background-color: #e6e6e675;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
 }

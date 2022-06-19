@@ -12,27 +12,35 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <div class="sidebar">
-        <h1>Count on me</h1>
-        <ul>
-            {% if g.user %}
-            <li><span>{{ g.user["username"] }}</span></li>
-            <li><a href="{{ url_for('index.index') }}">Home</a></li>
-            <li><a href="{{ url_for('cards.cards') }}">Cards</a></li>
-            <li><a href="{{ url_for('account.account') }}">Account</a></li>
-            <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-            {% else %}
-            <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-            <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
-            {% endif %}
-        </ul>
+    <div class="container">
+        <div class="sidebar">
+            <h1 class="heading-1">Count on me</h1>
+            <ul class="sidebar__list">
+                {% if g.user %}
+                <li class="sidebar__list-item"><span>{{ g.user["username"] }}</span></li>
+                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('index.index') }}">Home</a></li>
+                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('cards.cards') }}">Cards</a></li>
+                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('account.account') }}">Account</a></li>
+                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                {% else %}
+                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('auth.register') }}">Register</a></li>
+                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('auth.login') }}">Log In</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        
+        <section class="content">
+            <div class="flash-box">
+                {% for message in get_flashed_messages() %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+            </div>
+            <div class="content__content-box">
+                {% block content %}{% endblock %}
+            </div>
+        </section>
     </div>
-
-    <section class="main">
-        {% for message in get_flashed_messages() %}
-            <div class="flash">{{ message }}</div>
-        {% endfor %}
-        {% block content %}{% endblock %}
-    </section>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

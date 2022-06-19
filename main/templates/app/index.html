@@ -3,62 +3,106 @@
 {% block title %} Count on me {% endblock %}
 
 {% block content %}
-<h3>I am the main page</h3>
-<hr>
-<h4>Add purchase</h4>
-<form method="post">
-    <input type="number" name="price" placeholder="price">
-    <select name="category" id="">
-        <option disabled selected>Choose category</option>
-        {% for category in categories %}
-            <option value="{{ category }}">{{ category }}</option>
+<div class="main-section">
+    <div class="recent">
+        <h4 class="heading-4">Recent activity</h4>
+        {% for purchase in recent %}
+            <div class="recent__item">
+                <div class="recent__category">
+                    <div class="recent__category-icon">
+                        {% if purchase["category"] == "Cafe" %}
+                        <ion-icon name="restaurant-outline" class="category-ion category-ion--cafe"></ion-icon>
+                        {% elif purchase["category"] == "Transport" %}
+                        <ion-icon name="bus-outline" class="category-ion category-ion--transport"></ion-icon>
+                        {% elif purchase["category"] == "Grocery" %}
+                        <ion-icon name="cart-outline" class="category-ion category-ion--grocery"></ion-icon>
+                        {% endif %}
+                    </div>
+                    <div class="recent-category-name">
+                        {{ purchase["category"] }}
+                    </div>
+                </div>
+                <div class="recent__price">
+                    {{ symbol }}{{ purchase["price"] }}
+                </div>
+                <div class="recent__delete-btn">
+                    <form method="post">
+                        <select hidden name="purchase_id">
+                            <option selected hidden value="{{ purchase['purchase_id'] }}">{{ purchase["purchase_id"] }}</option>
+                        </select>
+                        <button type="submit" name="delete_purchase" class="btn-ion">
+                            <ion-icon name="close-circle-outline"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div>
         {% endfor %}
-    </select>
-    <select name="card_id" id="">
-        {% for card in cards %}
-            <option value="{{ card['card_id'] }}">{{ card["card_name"] }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit" name="add_purchase">Add purchase</button>
-</form>
-
-<h4>Recent activity</h4>
-{% for purchase in recent %}
-    <p>Category: {{ purchase["category"] }}, Price: {{ symbol }}{{ purchase["price"] }}</p>
-    <form method="post">
-        <select hidden name="purchase_id">
-            <option selected hidden value="{{ purchase['purchase_id'] }}">{{ purchase["purchase_id"] }}</option>
-        </select>
-        <button type="submit" name="delete_purchase">Delete purchase</button>
-    </form>
-{% endfor %}
-<h4>Where your money go?</h4>
-<p>You have spent: {{ recent_by_category["total"] }} </p>
-<p>Cafe: {{ recent_by_category["cafe"] }} </p>
-<p>Transport: {{ recent_by_category["transport"] }} </p>
-<p>Grocery: {{ recent_by_category["grocery"] }} </p>
-
-<h4>Shortcuts</h4>
-{% if shortcuts == 0 %}
-<p>You don't have any shortcut yet. Shortcut can be created at "Cards" page</p>
-<a href="{{ url_for('cards.cards') }}">Go to cards</a>
-{% else %}
-{% for shortcut in shortcuts %}
-<form method="post">
-    <div>
-        {{ shortcut["name"] }}
-        <select selected name="category">
-            <option value="{{ shortcut['category'] }}">{{ shortcut["category"] }}</option>
-        </select>
-        <select selected name="price">
-            <option value="{{ shortcut['price'] }}">{{ shortcut["price"] }}</option>
-        </select>
-        <select selected name="card_id">
-            <option value="1">1</option>
-        </select>
-        <button type="submit" name="use_shortcut">Submit</button>
     </div>
-</form>
-{% endfor %}
-{% endif %}
+
+    <div class="additional">
+        <div class="statistic">
+            <h4 class="heading-4">Where your money go?</h4>
+            <div class="statistic__content">
+                <p>You have spent: {{ symbol }}{{ recent_by_category["total"] }} </p>
+                <p>Cafe: {{ recent_by_category["cafe"] }} </p>
+                <p>Transport: {{ recent_by_category["transport"] }} </p>
+                <p>Grocery: {{ recent_by_category["grocery"] }} </p>
+            </div>
+        </div>
+        <div class="shortcuts">
+            <h4 class="heading-4">Shortcuts</h4>
+            {% if shortcuts == 0 %}
+            <div class="shortcuts__empty">
+                <p>You don't have any shortcut yet. Shortcut can be created at "Cards" page</p>
+                <a href="{{ url_for('cards.cards') }}">Go to cards</a>
+            </div>
+            {% else %}
+            <div class="shortcuts__box">
+            {% for shortcut in shortcuts %}
+                <form method="post">
+                    <div>
+                        <select hidden selected name="category">
+                            <option value="{{ shortcut['category'] }}">{{ shortcut["category"] }}</option>
+                        </select>
+                        <select hidden selected name="price">
+                            <option value="{{ shortcut['price'] }}">{{ shortcut["price"] }}</option>
+                        </select>
+                        <select hidden selected name="card_id">
+                            <option value="1">1</option>
+                        </select>
+                        {% if shortcut['category'] == "Cafe" %}
+                        <button type="submit" name="use_shortcut" class="btn btn-cafe">{{ shortcut["name"] }}</button>
+                        {% elif shortcut['category'] == "Transport" %}
+                        <button type="submit" name="use_shortcut" class="btn btn-transport">{{ shortcut["name"] }}</button>
+                        {% elif shortcut['category'] == "Grocery" %}
+                        <button type="submit" name="use_shortcut" class="btn btn-grocery">{{ shortcut["name"] }}</button>
+                        {% endif %}
+                    </div>
+                </form>
+            {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="purchase-section">
+    <div class="purchase-box">
+        <form method="post">
+            <input type="number" name="price" placeholder="price">
+            <select name="category" id="">
+                <option disabled selected>Choose category</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+            <select name="card_id" id="">
+                {% for card in cards %}
+                <option value="{{ card['card_id'] }}">{{ card["card_name"] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="add_purchase" class="btn btn-red">Add purchase</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

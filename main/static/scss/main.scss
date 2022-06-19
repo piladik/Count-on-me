@@ -1,11 +1,12 @@
+@import "abstracts/variables";
 @import "abstracts/ion-icon";
 @import "abstracts/typography";
-@import "abstracts/variables";
 
 @import "base/base";
 
 @import "components/auth";
 @import "components/buttons";
+@import "components/flash";
 
 @import "layout/content";
 @import "layout/sidebar";

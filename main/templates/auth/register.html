@@ -3,30 +3,33 @@
 {% block title %} Register {% endblock %}
 
 {% block content %}
-<form method="post">
-    <div class="field">
-        <label for="username">Username</label>
-        <input name="username" id="username">
-    </div>
-    <div class="field">
-        <label for="username">Email</label>
-        <input name="email" id="email">
-    </div>
-    <div class="field">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
-    </div>
-    <div class="field">
-        <label for="password2">Confirm</label>
-        <input type="password" name="confirm" id="password2">
-    </div>
-    <div class="field">
-        <select name="currency">
-            {% for object in currency %}
-                <option value="{{ object['name'] }}">{{ object["name"] }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit">Register</button>
-</form>
+<div class="auth-box">
+    <form method="post" class="auth-form">
+        <h2 class="heading-2">Sign up</h2>
+        <div class="auth-form__field">
+            <label for="username">Username</label>
+            <input name="username" id="username">
+        </div>
+        <div class="auth-form__field">
+            <label for="username">Email</label>
+            <input name="email" id="email">
+        </div>
+        <div class="auth-form__field">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+        </div>
+        <div class="auth-form__field">
+            <label for="password2">Confirm</label>
+            <input type="password" name="confirm" id="password2">
+        </div>
+        <div class="auth-form__field auth-form__field--currency ">
+            <select name="currency">
+                {% for object in currency %}
+                    <option value="{{ object['name'] }}">{{ object["name"] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-red">Register</button>
+    </form>
+</div>
 {% endblock %}

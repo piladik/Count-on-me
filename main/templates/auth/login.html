@@ -3,15 +3,18 @@
 {% block title %} Log In {% endblock %}
 
 {% block content %}
-<form method="post">
-    <div class="field">
-        <label for="username">Username</label>
-        <input name="username" id="username">
-    </div>
-    <div class="field">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
-    </div>
-    <button type="submit">Log In</button>
-</form>
+<div class="auth-box">
+    <form method="post" class="auth-form">
+        <h2 class="heading-2">Log In</h2>
+        <div class="auth-form__field">
+            <label for="username">Username</label>
+            <input name="username" id="username">
+        </div>
+        <div class="auth-form__field">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+        </div>
+        <button type="submit" class="btn btn-red">Log In</button>
+    </form>
+</div>
 {% endblock %}

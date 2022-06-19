@@ -1,0 +1,49 @@
+.auth-box {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-form  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    min-width: 30rem;
+    max-width: 35rem;
+    min-height: max-content;
+
+    border: 2px solid $color-primary;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem;
+    padding: 3rem;
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+
+        padding: 1rem;
+
+        input {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid $color-primary-dark;
+            outline: none;
+            box-shadow: 0 0.2rem 0.4rem rgba(black, $alpha: 0.3);
+        }
+
+        &--currency {
+            margin-left: 2rem;
+            align-self: flex-start;
+
+            position: relative;
+
+            select {
+                // display: none;
+            }
+        }
+    }
+}

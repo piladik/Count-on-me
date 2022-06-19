@@ -1,0 +1,26 @@
+.btn-ion {
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+
+    font-size: 2rem;
+}
+
+.category-ion {
+    font-size: 3rem;
+    padding: 0.5rem;
+    border-radius: 50px;
+
+    &--cafe {
+        background-color: $color-cafe;
+    }
+
+    &--transport {
+        background-color: $color-transport;
+    }
+
+    &--grocery {
+        background-color: $color-grocery;
+    }
+}
