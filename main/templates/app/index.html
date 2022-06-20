@@ -5,7 +5,7 @@
 {% block content %}
 <div class="main-section">
     <div class="recent">
-        <h4 class="heading-4">Recent activity</h4>
+        <h2 class="heading-2">Recent activity</h2>
         {% for purchase in recent %}
             <div class="recent__item">
                 <div class="recent__category">
@@ -41,7 +41,7 @@
 
     <div class="additional">
         <div class="statistic">
-            <h4 class="heading-4">Where your money go?</h4>
+            <h2 class="heading-2">Where your money go?</h2>
             <div class="statistic__content">
                 <p>You have spent: {{ symbol }}{{ recent_by_category["total"] }} </p>
                 <p>Cafe: {{ recent_by_category["cafe"] }} </p>
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="shortcuts">
-            <h4 class="heading-4">Shortcuts</h4>
+            <h2 class="heading-2">Shortcuts</h2>
             {% if shortcuts == 0 %}
             <div class="shortcuts__empty">
                 <p>You don't have any shortcut yet. Shortcut can be created at "Cards" page</p>
@@ -83,20 +83,26 @@
             </div>
             {% endif %}
         </div>
+        <button id="btn-open-purhase-form">Add new</button>
     </div>
 </div>
 
 <div class="purchase-section">
     <div class="purchase-box">
-        <form method="post">
-            <input type="number" name="price" placeholder="price">
-            <select name="category" id="">
+        <ion-icon name="close-circle-outline" id="btn-close-purhase-form"></ion-icon>
+        <form method="post" class="purchase-form">
+            <h3 class="heading-3">Add new</h3>
+            <label for="purchase-form-price">Type price</label>
+            <input type="number" name="price" placeholder="price" id="purchase-form-price">
+            <label for="purchase-form-category">Choose category</label>
+            <select name="category" id="purchase-form-category">
                 <option disabled selected>Choose category</option>
                 {% for category in categories %}
                 <option value="{{ category }}">{{ category }}</option>
                 {% endfor %}
             </select>
-            <select name="card_id" id="">
+            <label for="purchase-form-card">Choose card</label>
+            <select name="card_id" id="purchase-form-card">
                 {% for card in cards %}
                 <option value="{{ card['card_id'] }}">{{ card["card_name"] }}</option>
                 {% endfor %}
@@ -105,4 +111,16 @@
         </form>
     </div>
 </div>
+<script>
+    const openPurchaseFormBtn = document.getElementById("btn-open-purhase-form")
+    const closePurchaseFormBtn = document.getElementById("btn-close-purhase-form")
+    const purchaseSection = document.querySelector(".purchase-section")
+
+    openPurchaseFormBtn.addEventListener("click", () => {
+        purchaseSection.classList.toggle("display-purchase-form");
+    })
+    closePurchaseFormBtn.addEventListener("click", () => {
+        purchaseSection.classList.toggle("display-purchase-form");
+    })
+</script>
 {% endblock %}
