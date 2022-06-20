@@ -1,9 +1,12 @@
 .btn-ion {
   border: none;
-  border-radius: 10px;
   outline: none;
   cursor: pointer;
   font-size: 2rem; }
+  .btn-ion--round {
+    border-radius: 50px; }
+  .btn-ion--basic {
+    border-radius: 10px; }
 
 .category-ion {
   font-size: 3rem;
@@ -198,6 +201,22 @@ body {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap; }
+
+#btn-open-purhase-form {
+  position: relative;
+  margin-top: auto;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 1rem;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  font-size: 2.5rem; }
+  #btn-open-purhase-form ion-icon {
+    padding: 0.5rem;
+    font-size: 3rem;
+    background-color: #3a86ff; }
 
 .purchase-section {
   display: none;

@@ -1,10 +1,17 @@
 .btn-ion {
     border: none;
-    border-radius: 10px;
     outline: none;
     cursor: pointer;
 
     font-size: 2rem;
+
+    &--round {
+        border-radius: 50px;
+    }
+
+    &--basic {
+        border-radius: 10px;
+    }
 }
 
 .category-ion {
