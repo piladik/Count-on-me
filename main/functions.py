@@ -1,7 +1,3 @@
-from distutils.log import error
-from email import message
-from locale import currency
-from os import access
 import re
 from main.db import get_db
 
@@ -121,6 +117,14 @@ class Wallet(User):
         cards_list = self.db.execute("SELECT * FROM cards WHERE user_id = ?",
                                      (self.user_id, )).fetchall()
         return cards_list
+
+    def hasCards(self):
+        db = self.db.execute("SELECT * FROM cards WHERE user_id = ?",
+                             (self.user_id, )).fetchall()
+        if len(db) > 0:
+            return True
+        else:
+            return False
 
 
 class Purchase(User):
@@ -263,3 +267,6 @@ def toPercent(part, whole):
     else:
         percentage = round(part / whole * 100, 2)
         return str(percentage) + " %"
+
+
+# return True if user has any card

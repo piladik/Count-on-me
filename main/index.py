@@ -111,6 +111,8 @@ def index():
 
     # Return 10 last purchases from history table
     recent = purchase.show_recent()
+
+    # Return currency symbol so that it can be used on page
     currency_symbol = db.execute(
         "SELECT currency_symbol FROM users WHERE id = ?",
         (user_id, )).fetchone()

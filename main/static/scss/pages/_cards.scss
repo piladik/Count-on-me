@@ -1,0 +1,179 @@
+.cards-section {
+    display: flex;
+    gap: 2rem;
+    
+    padding: 2rem;
+    
+}
+
+.card {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+
+    h4 {
+        align-self: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    &__box {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    &__item {
+        display: flex;
+        justify-content: space-around;
+        flex-grow: 1;
+        margin-bottom: 0.1rem;
+        background-image: linear-gradient(to right, $color-primary, $color-secondary);
+        transition: all 0.2s;
+        padding: 1rem;
+        border: 1px solid $color-tertiary;
+        border-radius: 10px;
+
+        &:hover {
+            background-image: linear-gradient(to right, $color-secondary, $color-tertiary);
+        }
+
+        &--create-card {
+            flex-grow: initial;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            border: none;
+            margin-top: 1rem;
+            background-image: linear-gradient(to right, $color-silver-light, $color-silver);
+        }
+    }
+}
+
+.operations {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+
+    &__operation {
+        min-width: 20rem;
+        height: 15rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        ion-icon {
+            font-size: 3rem;
+        }
+
+        &:hover {
+            box-shadow: 0 1rem 1rem rgba($color: #000000, $alpha: 0.3);
+        }
+    }
+
+    &__deposit-withdraw {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to right bottom, $color-secondary, $color-tertiary);
+
+        &:hover {
+            background-image: linear-gradient(to right bottom, $color-secondary-light, $color-tertiary-light);
+        }
+    }
+
+    &__transfer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to right bottom, $color-tertiary, $color-primary);
+
+        &:hover {
+            background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-primary-light);
+        }
+    }
+
+    &__shortcut {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to right bottom, $color-tertiary-dark, $color-secondary-dark);
+        
+        &:hover {
+            background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-secondary-light);
+        }
+    }
+}
+
+.form-box {
+    display: none;
+
+    background-color: rgba($color: #000000, $alpha: 0.3);
+    width: calc(100% - 30rem);
+    height: 100%;
+    position: absolute;
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-image: linear-gradient(to right, $color-primary, $color-secondary);
+    position: relative;
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 0;
+
+    padding: 3rem;
+    border-radius: 20px;
+
+    ion-icon {
+        position: relative;
+        top: -5rem;
+        left: 10rem;
+        cursor: pointer;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    input,
+    select {
+        padding: 1rem;
+        outline: none;
+        border-radius: 10px;
+    }
+}
+
+.display-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

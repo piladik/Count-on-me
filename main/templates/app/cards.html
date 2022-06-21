@@ -3,63 +3,178 @@
 {% block title %} Count on me {% endblock %}
 
 {% block content %}
-<h3>I am the cards page</h3>
-<hr>
-<h4>Create card</h4>
-<form method="post">
-    <div class="field">
-        <input type="text" name="card_name" placeholder="Card name">
-        <input type="text" name="card_type" placeholder="Card type">
-        <button type="submit" name="card_create">Create</button>
-    </div>
-</form>
-<h4>Delete card</h4>
-<form method="post">
-    <div class="field">
-        <input type="number" name="card_id" placeholder="Card id">
-        <button type="submit" name="card_delete">Delete</button>
-    </div>
-</form>
-<h4>Deposit/Withdraw</h4>
-<form method="post">
-    <div class="field">
-        <input type="number" name="amount" placeholder="amount">
-        <select name="card_id">
+<div class="cards-section">
+    <section class="card">
+        <h2 class="heading-2">Current balance: {{ symbol }}{{ balance }}</h2>
+        <h4 class="heading-4">Your cards:</h4>
+        {% if hasCards == True %}
             {% for card in cards %}
+            <div class="card__box">
+                <div class="card__item">
+                    <div class="card__name">{{ card["card_name"] }}</div>
+                    <div class="card__balance">{{ symbol }}{{ card['cash'] }}</div>
+                    <div class="card__type">{{ card['card_type'] }}</div>
+                </div>
+                <div class="card__delete">
+                    <form method="post">
+                        <select hidden selected name="card_id">
+                            <option value="{{ card['card_id'] }}">{{ card["card_id"] }}</option>
+                        </select>
+                        <button type="submit" class="btn-ion" name="card_delete">
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+        <button class="btn-ion btn card__item card__item--create-card" id="btn-open-create-form">
+            <span>Create new card</span>
+            <ion-icon name="add-circle-outline"></ion-icon>
+        </button>
+    </section>
+    
+    <section class="operations">
+        <div class="operations__operation">
+            <div class="operations__deposit-withdraw" id="btn-deposit-withdraw">
+                <h4 class="heading-4">Deposit/Withdraw</h4>
+                <ion-icon name="swap-horizontal"></ion-icon>
+            </div>
+        </div>
+        <div class="operations__operation">
+            <div class="operations__transfer" id="btn-transfer">
+                <h4 class="heading-4">Transfer</h4>
+                <ion-icon name="shuffle"></ion-icon>
+            </div>
+        </div>
+
+        <div class="operations__operation">
+            <div class="operations__shortcut" id="btn-shortcut">
+                <h4 class="heading-4">Create shortcut</h4>
+                <ion-icon name="star"></ion-icon>
+            </div>
+        </div>
+
+    </section>
+</div>
+<div class="form-box" id="create-form">
+    <form method="post" class="form">
+        <h3 class="heading-3">Add new</h3>
+        <ion-icon name="close-circle-outline" id="btn-close-create-form"></ion-icon>
+        <div class="field">
+            <input type="text" name="card_name" placeholder="Card name">
+            <input type="text" name="card_type" placeholder="Card type">
+            <button type="submit" name="card_create" class="btn btn-red">Create</button>
+        </div>
+    </form>
+</div>
+
+<div class="form-box" id="deposit-withdraw-form">
+    <form method="post" class="form">
+        <h3 class="heading-3">Deposit/Withdraw</h3>
+        <ion-icon name="close-circle-outline" id="btn-close-deposit-withdraw-form"></ion-icon>
+        <div class="field">
+            <input type="number" name="amount" placeholder="amount">
+            <select name="card_id">
+                {% for card in cards %}
                 <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit" name="card_deposit">Deposit</button>
-        <button type="submit" name="card_withdraw">Withdraw</button>
-    </div>
-</form>
-<h4>Transfer</h4>
-<form method="post">
-    <div class="field">
-        <input type="number" name="amount" placeholder="amount">
-        <select name="card_id_from">
-            {% for card in cards %}
-            <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
-            {% endfor %}
-        </select>
-        <select name="card_id_to">
-            {% for card in cards %}
-            <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit" name="card_transfer">Transfer</button>
-    </div>
-</form>
-<h4>Create shortcut</h4>
-<form method="post">
-    <input type="number" name="price" placeholder="Enter price">
-    <input type="text" name="name" placeholder="Enter name">
-    <select name="category">
-        <option disabled selected> Choose category </option>
-        {% for category in categories %}
-        <option value="{{ category }}"> {{ category }} </option>
-        {% endfor %}
-    </select>
-    <button type="submit" name="card_shortcut">Create shortcut</button>
-</form>
+                {% endfor %}
+            </select>
+            <button type="submit" name="card_deposit" class="btn btn-red">Deposit</button>
+            <button type="submit" name="card_withdraw" class="btn btn-red">Withdraw</button>
+        </div>
+    </form>
+</div>
+
+<div class="form-box" id="transfer-form">
+    <form method="post" class="form">
+        <h3 class="heading-3">Transfer</h3>
+        <ion-icon name="close-circle-outline" id="btn-close-transfer-form"></ion-icon>
+        <div class="field">
+            <input type="number" name="amount" placeholder="amount">
+            <select name="card_id_from">
+                {% for card in cards %}
+                <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
+                {% endfor %}
+            </select>
+            <select name="card_id_to">
+                {% for card in cards %}
+                <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="card_transfer" class="btn btn-red">Transfer</button>
+        </div>
+    </form>
+</div>
+
+<div class="form-box" id="shortcut-form">
+    <form method="post" class="form">
+        <h3 class="heading-3">Create shortcut</h3>
+        <ion-icon name="close-circle-outline" id="btn-close-shortcut-form"></ion-icon>
+        <div class="field">
+            <input type="number" name="price" placeholder="Enter price">
+            <input type="text" name="name" placeholder="Enter name">
+            <select name="category">
+                <option disabled selected> Choose category </option>
+                {% for category in categories %}
+                <option value="{{ category }}"> {{ category }} </option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="card_shortcut" class="btn btn-red">Create shortcut</button>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    // for create and delete card
+    const openCreateFormBtn = document.getElementById("btn-open-create-form")
+    const closeCreateFormBtn = document.getElementById("btn-close-create-form")
+    const createForm = document.getElementById("create-form")
+    
+    openCreateFormBtn.addEventListener("click", () => {
+        createForm.classList.toggle("display-form");
+    })
+
+    closeCreateFormBtn.addEventListener("click", () => {
+        createForm.classList.toggle("display-form");
+    })
+
+    // for other operations
+    const openDepositWithdrawBtn = document.getElementById("btn-deposit-withdraw");
+    const closeDepositWithdrawBtn = document.getElementById("btn-close-deposit-withdraw-form");
+    const formDepositWithdraw = document.getElementById("deposit-withdraw-form");
+
+    openDepositWithdrawBtn.addEventListener("click", () => {
+        formDepositWithdraw.classList.toggle("display-form");
+    })
+
+    closeDepositWithdrawBtn.addEventListener("click", () => {
+        formDepositWithdraw.classList.toggle("display-form");
+    })
+
+    const openTransferBtn = document.getElementById("btn-transfer");
+    const closeTransferBtn = document.getElementById("btn-close-transfer-form");
+    const formTransfer = document.getElementById("transfer-form");
+
+    openTransferBtn.addEventListener("click", () => {
+        formTransfer.classList.toggle("display-form");
+    })
+
+    closeTransferBtn.addEventListener("click", () => {
+        formTransfer.classList.toggle("display-form");
+    })
+
+    const openShortcutBtn = document.getElementById("btn-shortcut");
+    const closeShortcutBtn = document.getElementById("btn-close-shortcut-form");
+    const formShortcut = document.getElementById("shortcut-form");
+
+    openShortcutBtn.addEventListener("click", () => {
+        formShortcut.classList.toggle("display-form");
+    })
+
+    closeShortcutBtn.addEventListener("click", () => {
+        formShortcut.classList.toggle("display-form");
+    })
+</script>
 {% endblock %}

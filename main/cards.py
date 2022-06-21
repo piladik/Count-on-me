@@ -130,6 +130,14 @@ def cards():
 
         flash(error)
 
+    # Return currency symbol so that it can be used on page
+    currency_symbol = db.execute(
+        "SELECT currency_symbol FROM users WHERE id = ?",
+        (user_id, )).fetchone()
+
     return render_template("app/cards.html",
                            cards=cards,
+                           hasCards=wallet.hasCards(),
+                           balance=wallet.show_balance_total(),
+                           symbol=currency_symbol["currency_symbol"],
                            categories=CATEGORIES)
