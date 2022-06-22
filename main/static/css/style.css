@@ -152,6 +152,51 @@ body {
     .sidebar__list-link:link, .sidebar__list-link :visited, .sidebar__list-link:active {
       text-decoration: none; }
 
+.account {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+  height: 100%; }
+  .account__password {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; }
+  .account__currency {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; }
+  .account__password-form, .account__currency-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1rem;
+    background-image: linear-gradient(to right, #3a86ff, #8338ec);
+    position: relative;
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 0;
+    padding: 3rem;
+    border-radius: 20px; }
+    .account__password-form ion-icon, .account__currency-form ion-icon {
+      position: relative;
+      top: -5rem;
+      left: 10rem;
+      cursor: pointer; }
+    .account__password-form .field, .account__currency-form .field {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem; }
+    .account__password-form input,
+    .account__password-form select, .account__currency-form input,
+    .account__currency-form select {
+      padding: 1rem;
+      outline: none;
+      border-radius: 10px; }
+
 .cards-section {
   display: flex;
   gap: 2rem;

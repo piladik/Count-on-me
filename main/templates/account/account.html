@@ -3,29 +3,36 @@
 {% block title %} Count on me {% endblock %}
 
 {% block content %}
-<h4>Change password</h4>
-<form method="post">
-    <div class="field">
-        <label for="current_password">Current password</label>
-        <input type="password" id="current_password" name="current_password">
+<div class="account">
+    <div class="account__password">
+        <form method="post" class="account__password-form">
+            <h3 class="heading-3">Change password</h3>
+            <div class="field">
+                <label for="current_password">Current password</label>
+                <input type="password" id="current_password" name="current_password">
+            </div>
+            <div class="field">
+                <label for="new_password">New password</label>
+                <input type="password" id="new_password" name="new_password">
+            </div>
+            <div class="field">
+                <label for="confirm_new_password">Confirm new password</label>
+                <input type="password" id="confirm_new_password" name="confirm_new_password">
+            </div>
+            <button type="submit" class="btn btn-red">Change password</button>
+        </form>
     </div>
-    <div class="field">
-        <label for="new_password">New password</label>
-        <input type="password" id="new_password" name="new_password">
+
+    <div class="account__currency">
+        <form method="post" class="account__currency-form">
+            <h3 class="heading-3">Change currency</h3>
+            <select name="currency">
+                {% for object in currency %}
+                <option value="{{ object['name'] }}">{{ object["name"] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-red">Change currency</button>
+        </form>
     </div>
-    <div class="field">
-        <label for="confirm_new_password">Confirm new password</label>
-        <input type="password" id="confirm_new_password" name="confirm_new_password">
-    </div>
-    <button type="submit">Change password</button>
-</form>
-<h4>Change currency</h4>
-<form method>
-    <select name="currency">
-        {% for object in currency %}
-        <option value="{{ object['name'] }}">{{ object["name"] }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Change currency</button>
-</form>
+</div>
 {% endblock %}
