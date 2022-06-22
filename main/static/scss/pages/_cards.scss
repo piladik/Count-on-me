@@ -7,9 +7,9 @@
 }
 
 .card {
-    width: 50%;
     display: flex;
     flex-direction: column;
+    margin: 1rem;
 
     background-color: white;
     padding: 2rem;
@@ -54,16 +54,24 @@
 }
 
 .operations {
-    width: 50%;
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
+    flex-direction: column;
+    max-width: fit-content;
+    background-color: white;
+    border-radius: 10px;
+    margin: 1rem;
+
+    &__operations-box {
+        display: flex;
+        max-width: max-content;
+        flex-wrap: wrap;
+    }
 
     &__operation {
-        min-width: 20rem;
+        width: 20rem;
         height: 15rem;
         border-radius: 10px;
+        margin: 2rem;
         cursor: pointer;
         transition: all 0.3s;
 

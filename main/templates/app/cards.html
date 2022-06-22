@@ -13,7 +13,6 @@
                 <div class="card__item">
                     <div class="card__name">{{ card["card_name"] }}</div>
                     <div class="card__balance">{{ symbol }}{{ card['cash'] }}</div>
-                    <div class="card__type">{{ card['card_type'] }}</div>
                 </div>
                 <div class="card__delete">
                     <form method="post">
@@ -35,34 +34,39 @@
     </section>
     
     <section class="operations">
-        <div class="operations__operation">
-            <div class="operations__deposit-withdraw" id="btn-deposit-withdraw">
-                <h4 class="heading-4">Deposit/Withdraw</h4>
-                <ion-icon name="swap-horizontal"></ion-icon>
+        <h2 class="heading-2">Operations</h2>
+        <div class="operations__operations-box">
+            <div class="operations__operation">
+                <div class="operations__deposit-withdraw" id="btn-deposit-withdraw">
+                    <h4 class="heading-4">Deposit/Withdraw</h4>
+                    <ion-icon name="swap-horizontal"></ion-icon>
+                </div>
+            </div>
+            <div class="operations__operation">
+                <div class="operations__transfer" id="btn-transfer">
+                    <h4 class="heading-4">Transfer</h4>
+                    <ion-icon name="shuffle"></ion-icon>
+                </div>
+            </div>
+            
+            <div class="operations__operation">
+                <div class="operations__shortcut" id="btn-shortcut">
+                    <h4 class="heading-4">Create shortcut</h4>
+                    <ion-icon name="star"></ion-icon>
+                </div>
             </div>
         </div>
-        <div class="operations__operation">
-            <div class="operations__transfer" id="btn-transfer">
-                <h4 class="heading-4">Transfer</h4>
-                <ion-icon name="shuffle"></ion-icon>
-            </div>
-        </div>
-
-        <div class="operations__operation">
-            <div class="operations__shortcut" id="btn-shortcut">
-                <h4 class="heading-4">Create shortcut</h4>
-                <ion-icon name="star"></ion-icon>
-            </div>
-        </div>
-
     </section>
 </div>
+
 <div class="form-box" id="create-form">
     <form method="post" class="form">
         <h3 class="heading-3">Add new</h3>
         <ion-icon name="close-circle-outline" id="btn-close-create-form"></ion-icon>
         <div class="field">
-            <input type="text" name="card_name" placeholder="Card name">
+            <label for="card_name">Enter card name</label>
+            <input type="text" name="card_name" placeholder="Card name" id="card_name">
+            <label for="card_type">Enter card type</label>
             <input type="text" name="card_type" placeholder="Card type">
             <button type="submit" name="card_create" class="btn btn-red">Create</button>
         </div>
@@ -74,8 +78,10 @@
         <h3 class="heading-3">Deposit/Withdraw</h3>
         <ion-icon name="close-circle-outline" id="btn-close-deposit-withdraw-form"></ion-icon>
         <div class="field">
+            <label for="amount_dep-with">Enter amount</label>
             <input type="number" name="amount" placeholder="amount">
-            <select name="card_id">
+            <label for="card-dep-with">Choose card</label>
+            <select name="card_id" id="card-dep-with">
                 {% for card in cards %}
                 <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
                 {% endfor %}
@@ -91,12 +97,15 @@
         <h3 class="heading-3">Transfer</h3>
         <ion-icon name="close-circle-outline" id="btn-close-transfer-form"></ion-icon>
         <div class="field">
-            <input type="number" name="amount" placeholder="amount">
+            <label for="amount-transfer">Enter amount</label>
+            <input type="number" name="amount" placeholder="amount" id="amount-transfer">
+            <label for="card_id_from">Transfer from</label>
             <select name="card_id_from">
                 {% for card in cards %}
                 <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
                 {% endfor %}
             </select>
+            <label for="card_id_to">Transfer to</label>
             <select name="card_id_to">
                 {% for card in cards %}
                 <option value="{{ card['card_id'] }}">{{ card['card_name'] }}</option>
@@ -112,9 +121,12 @@
         <h3 class="heading-3">Create shortcut</h3>
         <ion-icon name="close-circle-outline" id="btn-close-shortcut-form"></ion-icon>
         <div class="field">
-            <input type="number" name="price" placeholder="Enter price">
-            <input type="text" name="name" placeholder="Enter name">
-            <select name="category">
+            <label for="price_shortcut">Enter price</label>
+            <input type="number" name="price" placeholder="Enter price" id="price-shortcut">
+            <label for="name-shortcut">Create name</label>
+            <input type="text" name="name" placeholder="Enter name" id="name-shortcut">
+            <label for="category_shortcut">Choose category</label>
+            <select name="category" id="category_shortcut">
                 <option disabled selected> Choose category </option>
                 {% for category in categories %}
                 <option value="{{ category }}"> {{ category }} </option>

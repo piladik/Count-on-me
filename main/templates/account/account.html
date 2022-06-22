@@ -19,13 +19,13 @@
     </div>
     <button type="submit">Change password</button>
 </form>
-<h4>Change currenct</h4>
+<h4>Change currency</h4>
 <form method>
     <select name="currency">
         {% for object in currency %}
         <option value="{{ object['name'] }}">{{ object["name"] }}</option>
         {% endfor %}
-        <button type="submit">Change currency</button>
     </select>
+    <button type="submit">Change currency</button>
 </form>
 {% endblock %}
