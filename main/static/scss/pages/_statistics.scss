@@ -3,6 +3,12 @@
     justify-content: space-around;
     padding: 2rem;
 
+    @media only screen and (max-width: $bp-large) {
+        flex-direction: column;
+        gap: 3rem;
+        align-items: center;
+    }
+
     &__history-section {
         background-color: white;
         padding: 2rem;
@@ -35,6 +41,10 @@
         padding: 2rem;
         border-radius: 10px;
 
+        @media only screen and (max-width: $bp-small) {
+            max-width: 29rem;
+        }
+
         h2 {
             text-align: center;
         }
@@ -46,6 +56,10 @@
 
     &__chart-1 {
         max-width: 40rem;
+
+        // @media only screen and (max-width: $bp-large) {
+        //     max-width: 30rem;
+        // }
     }
 }
 

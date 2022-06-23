@@ -4,12 +4,20 @@
     margin: 1rem;
     
     padding: 2rem;
+
+    @media only screen and (max-width: $bp-medium) {
+       flex-direction: column;
+    }
 }
 
 .additional {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+
+    @media only screen and (max-width: $bp-medium) {
+        flex-direction: column-reverse;
+    }
 }
 
 .recent {
@@ -25,6 +33,10 @@
         align-items: center;
         width: 30rem;
         padding-bottom: 1rem;
+
+        @media only screen and (max-width: $bp-medium) {
+            width: 100%;
+        }
 
         // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.2);
     }
@@ -86,6 +98,10 @@
     padding: 1rem 2rem;
     font-size: 2.5rem;
 
+    @media only screen and (max-width: $bp-medium) {
+        margin-top: 2rem;
+    }
+
 
     ion-icon {
         padding: 0.5rem;
@@ -105,6 +121,14 @@
     margin-bottom: auto;
     top: 0;
     bottom: 0;
+
+    @media only screen and (max-width: $bp-medium) {
+       height: 200vh;
+    }
+
+    @media only screen and (max-width: $bp-smallest) {
+        width: calc(100% - 10rem);
+    }
 }
 
 .purchase-box {
@@ -127,12 +151,23 @@
         top: -18rem;
         left: 20rem;
         cursor: pointer;
+
+        @media only screen and (max-width: $bp-large) {
+            top: -19rem;
+            left: 24rem;
+        }
+
+        @media only screen and (max-width: $bp-small) {
+            top: -19rem;
+            left: 27rem;
+        }
     }
 
     .purchase-form {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+
     }
 
     input, select {

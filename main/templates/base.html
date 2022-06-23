@@ -22,11 +22,26 @@
             <ul class="sidebar__list">
                 {% if g.user %}
                 <li class="sidebar__list-item"><span>{{ g.user["username"] }}</span></li>
-                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('index.index') }}">Home</a></li>
-                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('cards.cards') }}">Cards</a></li>
-                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('statistics.statistics') }}">Statistics</a></li>
-                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('account.account') }}">Account</a></li>
-                <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                <a href="{{ url_for('index.index') }}" class="sidebar__list-item">
+                    <ion-icon name="bag-outline"></ion-icon>
+                    <div>Home</div>
+                </a>
+                <a href="{{ url_for('cards.cards') }}" class="sidebar__list-item">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <div>Cards</div>
+                </a>
+                <a href="{{ url_for('statistics.statistics') }}" class="sidebar__list-item">
+                    <ion-icon name="stats-chart-outline"></ion-icon>
+                    <div>Statistics</div>
+                </a>
+                <a href="{{ url_for('account.account') }}" class="sidebar__list-item">
+                    <ion-icon name="key-outline"></ion-icon>
+                    <div>Account</div>
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="sidebar__list-item">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <div>Log out</div>
+                </a>
                 {% else %}
                 <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('auth.register') }}">Register</a></li>
                 <li class="sidebar__list-item"><a class="sidebar__list-link" href="{{ url_for('auth.login') }}">Log In</a></li>

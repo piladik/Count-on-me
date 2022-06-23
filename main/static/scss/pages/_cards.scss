@@ -3,6 +3,10 @@
     gap: 2rem;
     
     padding: 2rem;
+
+    @media only screen and (max-width: $bp-medium) {
+        flex-direction: column;;
+    }
     
 }
 
@@ -61,10 +65,22 @@
     border-radius: 10px;
     margin: 1rem;
 
+    @media only screen and (max-width: $bp-large) {
+        max-width: min-content;
+    }
+
+    @media only screen and (max-width: $bp-medium) {
+        max-width: max-content;
+    }
+
     &__operations-box {
         display: flex;
         max-width: max-content;
         flex-wrap: wrap;
+
+        @media only screen and (max-width: $bp-medium) {
+            justify-content: center;
+        }
     }
 
     &__operation {
@@ -141,6 +157,14 @@
     margin-bottom: auto;
     top: 0;
     bottom: 0;
+
+    @media only screen and (max-width: $bp-medium) {
+        height: 200vh;
+    }
+
+    @media only screen and (max-width: $bp-smallest) {
+        width: calc(100% - 10rem);
+    }
 }
 
 .form {

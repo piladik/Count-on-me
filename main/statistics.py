@@ -75,7 +75,10 @@ def statistics():
     total = db.execute(
         "SELECT SUM(price) AS price FROM history WHERE user_id = ?",
         (user_id, )).fetchall()
-    print(total[0]["price"])
+
+    currency_symbol = db.execute(
+        "SELECT currency_symbol FROM users WHERE id = ?",
+        (user_id, )).fetchone()
 
     return render_template("app/statistics.html",
                            categoryList=categoryList,
@@ -85,7 +88,8 @@ def statistics():
                            colorList=colorList,
                            table=table,
                            day=fday,
-                           month=fmonth)
+                           month=fmonth,
+                           symbol=currency_symbol["currency_symbol"])
 
 
 # This returns an object of list of categories AND how much money were spent on each category
