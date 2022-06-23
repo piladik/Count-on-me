@@ -446,3 +446,54 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column; }
+
+.statistics {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem; }
+  .statistics__history-section {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    height: min-content; }
+    .statistics__history-section form {
+      margin-bottom: 2rem; }
+    .statistics__history-section h2 {
+      text-align: start;
+      margin-bottom: 1rem; }
+    .statistics__history-section h3 {
+      text-align: start; }
+  .statistics__charts-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; }
+  .statistics__chart-box-1, .statistics__chart-box-2 {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: max-content; }
+    .statistics__chart-box-1 h2, .statistics__chart-box-2 h2 {
+      text-align: center; }
+  .statistics__chart-1 {
+    max-width: 40rem; }
+
+#select-day {
+  padding: 0.5rem 2rem;
+  font-size: 2rem; }
+
+.history__item {
+  display: flex;
+  width: 30rem;
+  padding: 1rem; }
+
+.history__price {
+  margin-left: auto; }
+
+.history__category, .history__price {
+  display: flex;
+  align-items: center; }
+
+.history__category {
+  gap: 1rem; }

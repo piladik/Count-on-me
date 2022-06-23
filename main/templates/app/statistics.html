@@ -3,5 +3,146 @@
 {% block title %} Count on me {% endblock %}
 
 {% block content %}
-Hello
+<div class="statistics">
+    <div class="statistics__history-section">
+        <div class="history">
+            <h2 class="heading-2">History</h2>
+            <form method="post">
+                <select name="year" id="">
+                    <option value="2022">2022</option>
+                </select>
+                <select name="month" id="">
+                    {% for i in range(12) %}
+                    <option value="{{ i + 1}}">{{ i + 1 }}</option>
+                    {% endfor %}
+                </select>
+                <select name="day" id="">
+                    {% for i in range(31) %}
+                    <option value="{{ i + 1}}">{{ i + 1 }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-red" type="submit" name="select-day" id="select-day">
+                    Select
+                </button>
+            </form>
+            <h3 class="heading-3"> Purchases in {{ day }}</h3>
+            {% for row in table %}
+            <div class="history__item">
+                <div class="history__category">
+                    {% if row["category"] == "Grocery" %}
+                    <ion-icon name="storefront-outline" class="category-ion category-ion--grocery"></ion-icon>
+                    {% elif row["category"] == "Transport" %}
+                    <ion-icon name="bus-outline" class="category-ion category-ion--transport"></ion-icon>
+                    {% elif row["category"] == "Cafe" %}
+                    <ion-icon name="restaurant-outline" class="category-ion category-ion--cafe"></ion-icon>
+                    {% endif %}
+                    {{ row["category"] }}
+                </div>
+                <div class="history__price">
+                    -{{ row["price"] }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="statistics__charts-section">
+        <div class="statistics__chart-box-1">
+            <h3 class="heading-3">Money spent on each category in {{ month }}</h2>
+            <button class="btn btn-red" id="btn-open-change-month">Change month</button>
+            <div class="statistics__chart-1">
+                <canvas id="myChart" width="100" height="200" aria-label="test" role="img"></canvas>
+            </div>
+        </div>
+
+        <div class="statistics__chart-box-2">
+            <h3 class="heading-3">Money spent each day in {{ month }}</h3>
+            <div class="statistics__chart-2">
+                <canvas id="myChart-2" width="100" height="250" aria-label="test" role="img"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-box" id="change-month-form">
+    <form method="post" class="form">
+        <h3 class="heading-3">Choose month</h3>
+        <ion-icon name="close-circle-outline" id="btn-close-change-month"></ion-icon>
+        <div class="field">
+            <select name="year" id="">
+                <option value="2022">2022</option>
+            </select>
+            <select name="month" id="">
+                {% for i in range(12) %}
+                <option value="{{ i + 1}}">{{ i + 1 }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-red" type="submit" name="select-month" id="select-month">
+                Select
+        </button>
+        </div>
+    </form>
+</div>
+<script>
+    const openChangeMonthBtn = document.getElementById("btn-open-change-month");
+    const closeChangeMonthBtn = document.getElementById("btn-close-change-month");
+    const changeMonthForm = document.getElementById("change-month-form");
+
+    openChangeMonthBtn.addEventListener("click", () => {
+        changeMonthForm.classList.toggle("display-form");
+    })
+
+    closeChangeMonthBtn.addEventListener("click", () => {
+        changeMonthForm.classList.toggle("display-form");
+    })
+
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+                labels: {{ categoryList | tojson }},
+                datasets: [{
+                    data: {{ priceList | tojson }},
+                    backgroundColor: ["#5e60cea9", "#72efdca2", "#48bfe3ad"]
+                }]
+        },
+        options: {
+            maintainAspectRatio: false,
+                plugins: {
+                // title: {
+                //     display: true,
+                //     text: "Money spent on each category",
+                // },
+                // legend: {
+                //     display: false
+                // }
+            },
+        }
+    });
+
+    const ctx2 = document.getElementById('myChart-2').getContext('2d');
+    const myChart_2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+                labels: {{ dayList | tojson }},
+                datasets: [{
+                    data: {{ totalPerDay | tojson}},
+                    backgroundColor: {{ colorList | tojson}},
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+                plugins: {
+                // title: {
+                //     display: true,
+                //     text: "Money spent on each category",
+                // },
+                legend: {
+                    display: false
+                }
+            },
+        }
+    });
+</script>
 {% endblock %}

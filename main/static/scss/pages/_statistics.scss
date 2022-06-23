@@ -1,0 +1,78 @@
+.statistics {
+    display: flex;
+    justify-content: space-around;
+    padding: 2rem;
+
+    &__history-section {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        height: min-content;
+        form {
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            text-align: start;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            text-align: start;
+        }
+    }
+
+    &__charts-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    &__chart-box-1,
+    &__chart-box-2 {
+
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+
+        h2 {
+            text-align: center;
+        }
+
+        display: flex;
+        flex-direction: column;
+        max-width: max-content;
+    }
+
+    &__chart-1 {
+        max-width: 40rem;
+    }
+}
+
+#select-day {
+    padding: 0.5rem 2rem;
+    font-size: 2rem;
+}
+
+
+.history {
+
+    &__item {
+        display: flex;
+        width: 30rem;
+        padding: 1rem;
+    }
+
+    &__price {
+        margin-left: auto;
+    }
+
+    &__category, &__price {
+        display: flex;
+        align-items: center;
+    }
+
+    &__category {
+        gap: 1rem;
+    }
+}
