@@ -19,7 +19,7 @@
                 <label for="confirm_new_password">Confirm new password</label>
                 <input type="password" id="confirm_new_password" name="confirm_new_password">
             </div>
-            <button type="submit" class="btn btn-red">Change password</button>
+            <button type="submit" class="btn btn-red" name="change_password">Change password</button>
         </form>
     </div>
 
@@ -31,7 +31,7 @@
                 <option value="{{ object['name'] }}">{{ object["name"] }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-red">Change currency</button>
+            <button type="submit" class="btn btn-red" name="change_currency">Change currency</button>
         </form>
     </div>
 </div>
